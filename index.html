@@ -12,9 +12,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ═══════════════════════════════════
-   TOKENS
-═══════════════════════════════════ */
 :root {
   --gold:        #D4AF37;
   --gold-light:  #F2D06B;
@@ -22,7 +19,7 @@
   --green:       #00E676;
   --green-glow:  rgba(0,230,118,0.5);
   --black:       #020202;
-  --glass-bg:    rgba(5, 5, 5, 0.55);
+  --glass-bg:    rgba(5,5,5,0.55);
   --glass-border:rgba(212,175,55,0.25);
   --ff-head:     'Playfair Display', Georgia, serif;
   --ff-body:     'Outfit', sans-serif;
@@ -40,7 +37,7 @@ body {
 }
 
 /* ═══════════════════════════════════
-   BACKGROUND HERO IMAGE SECTION
+   HERO BACKGROUND — BLURRED IMAGE
 ═══════════════════════════════════ */
 .hero-bg {
   position: relative;
@@ -50,48 +47,40 @@ body {
   overflow: hidden;
 }
 
-/* Layered background: image + dark overlay + gold vignette */
+/* Blurred background image layer */
 .hero-bg::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -20px; /* extra space so blur edges don't show */
   background-image: url('https://mahakalx.sbs/wp-content/uploads/2026/02/167889512d6c79e5ffd6c8fac31947cb.jpg');
   background-size: cover;
   background-position: center 30%;
   background-repeat: no-repeat;
-  transform: scale(1.04);
+  /* BLUR applied here */
+  filter: blur(6px) brightness(0.75);
+  transform: scale(1.08);
   animation: slowZoom 18s ease-in-out infinite alternate;
   z-index: 0;
 }
 @keyframes slowZoom {
-  from { transform: scale(1.04); }
-  to   { transform: scale(1.12); }
+  from { transform: scale(1.08); }
+  to   { transform: scale(1.16); }
 }
 
-/* Dark cinematic overlay */
+/* Dark cinematic overlay on top of blur */
 .hero-bg::after {
   content: '';
   position: absolute;
   inset: 0;
   background:
     linear-gradient(to bottom,
-      rgba(2,2,2,0.72) 0%,
-      rgba(2,2,2,0.30) 35%,
-      rgba(2,2,2,0.45) 65%,
-      rgba(2,2,2,0.95) 100%
+      rgba(2,2,2,0.65) 0%,
+      rgba(2,2,2,0.20) 35%,
+      rgba(2,2,2,0.40) 65%,
+      rgba(2,2,2,0.92) 100%
     ),
-    radial-gradient(ellipse at 50% 40%, rgba(212,175,55,0.08) 0%, transparent 65%);
+    radial-gradient(ellipse at 50% 40%, rgba(212,175,55,0.07) 0%, transparent 65%);
   z-index: 1;
-}
-
-/* ═══════════════════════════════════
-   GLASSMORPHISM MIXIN
-═══════════════════════════════════ */
-.glass {
-  backdrop-filter: blur(22px) saturate(160%);
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
 }
 
 /* ═══════════════════════════════════
@@ -131,6 +120,7 @@ nav {
   align-items: center;
   gap: 10px;
 }
+.nav-right a { text-decoration: none; }
 
 .btn-base {
   font-family: var(--ff-body);
@@ -150,20 +140,13 @@ nav {
   border: 1px solid rgba(212,175,55,0.35);
   color: var(--gold);
 }
-.btn-ghost:hover {
-  background: rgba(212,175,55,0.1);
-  border-color: var(--gold);
-}
+.btn-ghost:hover { background: rgba(212,175,55,0.1); border-color: var(--gold); }
 .btn-solid {
   background: linear-gradient(135deg, #00C853, var(--green));
   color: #000;
   box-shadow: 0 0 22px var(--green-glow);
 }
-.btn-solid:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 36px var(--green-glow);
-  filter: brightness(1.08);
-}
+.btn-solid:hover { transform: translateY(-2px); box-shadow: 0 0 36px var(--green-glow); filter: brightness(1.08); }
 
 /* ═══════════════════════════════════
    HERO CONTENT
@@ -180,7 +163,6 @@ nav {
   padding: 60px 24px 80px;
 }
 
-/* Live badge */
 .live-badge {
   display: inline-flex;
   align-items: center;
@@ -207,10 +189,9 @@ nav {
 }
 @keyframes pulseAnim {
   0%,100% { box-shadow: 0 0 0 0 rgba(0,230,118,0.6); }
-  55%     { box-shadow: 0 0 0 7px rgba(0,230,118,0); }
+  55%      { box-shadow: 0 0 0 7px rgba(0,230,118,0); }
 }
 
-/* Main headline */
 .hero-h1 {
   font-family: var(--ff-head);
   font-weight: 900;
@@ -233,25 +214,21 @@ nav {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: shimmer 3.5s linear infinite, heroFadeUp 1s 0.1s ease both;
-  text-shadow: none;
 }
-@keyframes shimmer {
-  to { background-position: 200% center; }
-}
+@keyframes shimmer { to { background-position: 200% center; } }
 
-/* Subhead */
 .hero-sub {
   font-family: var(--ff-body);
   font-size: clamp(0.95rem, 2.5vw, 1.15rem);
   font-weight: 300;
-  color: rgba(255,255,255,0.62);
+  color: rgba(255,255,255,0.70);
   max-width: 460px;
   line-height: 1.75;
   margin: 18px auto 42px;
   animation: heroFadeUp 1s 0.2s ease both;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.8);
 }
 
-/* CTA group */
 .cta-group {
   display: flex;
   flex-wrap: wrap;
@@ -259,6 +236,7 @@ nav {
   justify-content: center;
   animation: heroFadeUp 1s 0.35s ease both;
 }
+.cta-group a { text-decoration: none; }
 
 .btn-hero {
   font-family: var(--ff-body);
@@ -310,10 +288,7 @@ nav {
   20%  { opacity: 1; }
   100% { left: 140%; opacity: 0; }
 }
-.btn-play:hover {
-  transform: translateY(-4px) scale(1.04);
-  box-shadow: 0 0 55px var(--green-glow);
-}
+.btn-play:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 0 55px var(--green-glow); }
 .btn-wa {
   background: transparent;
   border: 1px solid rgba(212,175,55,0.4);
@@ -321,13 +296,9 @@ nav {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
-.btn-wa:hover {
-  background: rgba(212,175,55,0.1);
-  border-color: var(--gold);
-  transform: translateY(-3px);
-}
+.btn-wa:hover { background: rgba(212,175,55,0.1); border-color: var(--gold); transform: translateY(-3px); }
 
-/* Stats row */
+/* Stats */
 .stats-row {
   display: flex;
   gap: 24px;
@@ -367,44 +338,6 @@ nav {
   margin-top: 4px;
 }
 
-/* scroll cue */
-.scroll-cue {
-  position: absolute;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  color: rgba(255,255,255,0.3);
-  font-family: var(--ff-body);
-  font-size: 0.58rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  animation: heroFadeUp 1s 0.8s ease both;
-}
-.scroll-mouse {
-  width: 22px; height: 34px;
-  border: 1px solid rgba(212,175,55,0.3);
-  border-radius: 11px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-}
-.scroll-wheel {
-  width: 3px; height: 7px;
-  background: var(--gold);
-  border-radius: 2px;
-  animation: scrollWheel 1.8s ease-in-out infinite;
-}
-@keyframes scrollWheel {
-  0%,100% { transform: translateY(0); opacity: 1; }
-  70%     { transform: translateY(8px); opacity: 0; }
-}
-
 @keyframes heroFadeUp {
   from { opacity: 0; transform: translateY(30px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -413,6 +346,54 @@ nav {
   from { opacity: 0; transform: scale(0.9); }
   to   { opacity: 1; transform: scale(1); }
 }
+
+/* ═══════════════════════════════════
+   WINNERS TICKER
+═══════════════════════════════════ */
+.trust-strip {
+  background: rgba(5,5,5,0.95);
+  border-top: 1px solid rgba(212,175,55,0.18);
+  border-bottom: 1px solid rgba(212,175,55,0.18);
+  overflow: hidden;
+}
+.strip-inner { display: flex; align-items: center; }
+.strip-label {
+  flex-shrink: 0;
+  padding: 13px 20px;
+  font-family: var(--ff-body);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+  color: #000;
+  white-space: nowrap;
+}
+.strip-scroll-wrap { overflow: hidden; flex: 1; }
+.strip-track {
+  display: flex;
+  width: max-content;
+  animation: stripScroll 30s linear infinite;
+}
+.strip-track:hover { animation-play-state: paused; }
+@keyframes stripScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.strip-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  border-right: 1px solid rgba(212,175,55,0.1);
+  font-family: var(--ff-body);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.55);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.strip-amount { color: var(--green); font-weight: 600; }
+.strip-game   { color: var(--gold); font-size: 0.65rem; }
 
 /* ═══════════════════════════════════
    GAMES SECTION
@@ -460,14 +441,13 @@ nav {
   background-clip: text;
 }
 
-/* Game cards grid */
 .games-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 14px;
 }
-@media(min-width: 560px) { .games-grid { grid-template-columns: repeat(3, 1fr); } }
-@media(min-width: 900px) { .games-grid { grid-template-columns: repeat(6, 1fr); } }
+@media(min-width:560px)  { .games-grid { grid-template-columns: repeat(3,1fr); } }
+@media(min-width:900px)  { .games-grid { grid-template-columns: repeat(6,1fr); } }
 
 .game-card {
   position: relative;
@@ -484,123 +464,41 @@ nav {
 }
 .game-card::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: radial-gradient(circle at 50% 0%, rgba(212,175,55,0.07), transparent 65%);
   opacity: 0;
   transition: opacity 0.3s;
 }
-.game-card:hover {
-  transform: translateY(-10px) scale(1.03);
-  border-color: rgba(212,175,55,0.5);
-  box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 30px rgba(212,175,55,0.08);
-}
+.game-card:hover { transform: translateY(-10px) scale(1.03); border-color: rgba(212,175,55,0.5); box-shadow: 0 24px 60px rgba(0,0,0,0.7), 0 0 30px rgba(212,175,55,0.08); }
 .game-card:hover::before { opacity: 1; }
 
 .live-pill {
-  position: absolute;
-  top: 10px; right: 10px;
+  position: absolute; top: 10px; right: 10px;
   display: flex; align-items: center; gap: 4px;
   font-family: var(--ff-body);
-  font-size: 0.5rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  font-size: 0.5rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
   color: #ff6060;
-  padding: 3px 8px;
-  border-radius: 50px;
+  padding: 3px 8px; border-radius: 50px;
   background: rgba(255,40,40,0.1);
   border: 1px solid rgba(255,40,40,0.25);
 }
-.r-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: #ff3333;
-  animation: rPulse 1.2s infinite;
-}
+.r-dot { width:5px; height:5px; border-radius:50%; background:#ff3333; animation:rPulse 1.2s infinite; }
 @keyframes rPulse {
   0%,100% { box-shadow: 0 0 0 0 rgba(255,40,40,0.6); }
-  50%     { box-shadow: 0 0 0 4px rgba(255,40,40,0); }
+  50%      { box-shadow: 0 0 0 4px rgba(255,40,40,0); }
 }
-.card-icon { font-size: 2.8rem; display: block; margin-bottom: 12px; }
-.card-name {
-  font-family: var(--ff-head);
-  font-size: 1rem;
-  font-weight: 700;
-  color: #fff;
-  display: block;
-  margin-bottom: 4px;
-}
-.card-meta {
-  font-family: var(--ff-body);
-  font-size: 0.6rem;
-  letter-spacing: 1px;
-  color: rgba(255,255,255,0.3);
-  text-transform: uppercase;
-}
-
-/* ═══════════════════════════════════
-   TRUST STRIP (auto-scroll ticker)
-═══════════════════════════════════ */
-.trust-strip {
-  background: rgba(5,5,5,0.9);
-  border-top: 1px solid rgba(212,175,55,0.18);
-  border-bottom: 1px solid rgba(212,175,55,0.18);
-  overflow: hidden;
-  padding: 0;
-}
-.strip-inner {
-  display: flex;
-  align-items: center;
-}
-.strip-label {
-  flex-shrink: 0;
-  padding: 13px 20px;
-  font-family: var(--ff-body);
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-  color: #000;
-  white-space: nowrap;
-}
-.strip-scroll-wrap { overflow: hidden; flex: 1; }
-.strip-track {
-  display: flex;
-  width: max-content;
-  animation: stripScroll 30s linear infinite;
-}
-.strip-track:hover { animation-play-state: paused; }
-@keyframes stripScroll {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.strip-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 13px 28px;
-  border-right: 1px solid rgba(212,175,55,0.1);
-  font-family: var(--ff-body);
-  font-size: 0.75rem;
-  color: rgba(255,255,255,0.55);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.strip-amount { color: var(--green); font-weight: 600; }
-.strip-game { color: var(--gold); font-size: 0.65rem; }
+.card-icon  { font-size: 2.8rem; display: block; margin-bottom: 12px; }
+.card-name  { font-family: var(--ff-head); font-size: 1rem; font-weight: 700; color: #fff; display: block; margin-bottom: 4px; }
+.card-meta  { font-family: var(--ff-body); font-size: 0.6rem; letter-spacing: 1px; color: rgba(255,255,255,0.3); text-transform: uppercase; }
 
 /* ═══════════════════════════════════
    TRUST PILLARS
 ═══════════════════════════════════ */
-.pillars-wrap {
-  position: relative; z-index: 10;
-  background: rgba(5,5,5,0.85);
-}
+.pillars-wrap { position: relative; z-index: 10; background: rgba(5,5,5,0.85); }
 .pillars {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3,1fr);
   gap: 1px;
   background: rgba(212,175,55,0.15);
 }
@@ -611,7 +509,6 @@ nav {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: background 0.3s;
-  cursor: default;
 }
 .pillar:hover { background: rgba(212,175,55,0.04); }
 .pillar-icon { font-size: 1.8rem; margin-bottom: 12px; display: block; }
@@ -625,26 +522,16 @@ nav {
   background-clip: text;
   line-height: 1.1;
 }
-.pillar-sub {
-  font-family: var(--ff-body);
-  font-size: 0.62rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
-  margin-top: 5px;
-}
+.pillar-sub { font-family: var(--ff-body); font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-top: 5px; }
 
 /* ═══════════════════════════════════
-   FINAL CTA SECTION
+   FINAL CTA
 ═══════════════════════════════════ */
 .cta-section {
-  position: relative;
-  z-index: 10;
+  position: relative; z-index: 10;
   padding: 90px 24px;
   text-align: center;
-  background:
-    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(212,175,55,0.07), transparent),
-    rgba(2,2,2,0.95);
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(212,175,55,0.07), transparent), rgba(2,2,2,0.95);
   border-top: 1px solid rgba(212,175,55,0.15);
 }
 .cta-title {
@@ -670,12 +557,8 @@ nav {
   margin: 0 auto 40px;
   line-height: 1.75;
 }
-.cta-btns {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  justify-content: center;
-}
+.cta-btns { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+.cta-btns a { text-decoration: none; }
 .cta-note {
   font-family: var(--ff-body);
   font-size: 0.62rem;
@@ -716,10 +599,7 @@ footer {
   text-align: center;
   flex: 1;
 }
-.footer-links {
-  display: flex;
-  gap: 20px;
-}
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
 .footer-link {
   font-family: var(--ff-body);
   font-size: 0.65rem;
@@ -731,6 +611,57 @@ footer {
   text-decoration: none;
 }
 .footer-link:hover { color: var(--gold); }
+
+/* ═══════════════════════════════════
+   AGENCY CREDIT BAR — mobile-friendly
+═══════════════════════════════════ */
+.agency-bar {
+  background: #000;
+  text-align: center;
+  padding: 12px 16px;
+  border-top: 1px solid rgba(212,175,55,0.1);
+}
+.agency-bar p {
+  font-family: var(--ff-body);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.28);
+  letter-spacing: 1px;
+  line-height: 1.6;
+}
+.agency-bar a {
+  color: #D4AF37;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.agency-bar a:hover { opacity: 0.7; }
+
+/* ═══════════════════════════════════
+   FLOATING TELEGRAM FAB
+═══════════════════════════════════ */
+.fab-tg {
+  position: fixed;
+  right: 20px;
+  bottom: calc(78px + env(safe-area-inset-bottom));
+  z-index: 998;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2AABEE, #1A7FC4);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 22px rgba(42,171,238,0.5);
+  cursor: pointer;
+  text-decoration: none;
+  animation: fabBob 3s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+.fab-tg:hover { transform: scale(1.12); animation-play-state: paused; }
+@keyframes fabBob {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@media(min-width:768px) { .fab-tg { bottom: 30px; } }
 
 /* ═══════════════════════════════════
    MOBILE BOTTOM NAV
@@ -748,7 +679,7 @@ footer {
   background: rgba(2,2,2,0.92);
   border-top: 1px solid rgba(212,175,55,0.2);
 }
-@media(max-width: 767px) {
+@media(max-width:767px) {
   .mob-nav { display: flex; }
   body { padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
 }
@@ -776,14 +707,7 @@ footer {
   background: linear-gradient(90deg, transparent, var(--gold), transparent);
   border-radius: 1px;
 }
-.mn-icon {
-  width: 22px; height: 22px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+.mn-icon { width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
 .mn-badge {
   position: absolute;
   top: 0; right: calc(50% - 16px);
@@ -795,68 +719,32 @@ footer {
 }
 
 /* ═══════════════════════════════════
-   FLOATING WHATSAPP FAB
-═══════════════════════════════════ */
-.fab-wa {
-  position: fixed;
-  right: 20px;
-  bottom: calc(78px + env(safe-area-inset-bottom));
-  z-index: 998;
-  width: 52px; height: 52px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #25D366, #128C7E);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 4px 22px rgba(37,211,102,0.5);
-  cursor: pointer;
-  border: none;
-  animation: fabBob 3s ease-in-out infinite;
-  transition: transform 0.2s;
-}
-.fab-wa:hover { transform: scale(1.12); }
-@keyframes fabBob {
-  0%,100% { transform: translateY(0); }
-  50%     { transform: translateY(-6px); }
-}
-@media(min-width: 768px) {
-  .fab-wa { bottom: 30px; }
-}
-
-/* ═══════════════════════════════════
    SCROLL REVEAL
 ═══════════════════════════════════ */
-.sv {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.75s ease, transform 0.75s ease;
-}
-.sv.on { opacity: 1; transform: translateY(0); }
-.d1 { transition-delay: 0.1s; }
-.d2 { transition-delay: 0.2s; }
-.d3 { transition-delay: 0.3s; }
-.d4 { transition-delay: 0.4s; }
-.d5 { transition-delay: 0.5s; }
-.d6 { transition-delay: 0.6s; }
+.sv { opacity:0; transform:translateY(28px); transition:opacity 0.75s ease, transform 0.75s ease; }
+.sv.on { opacity:1; transform:translateY(0); }
+.d1{transition-delay:0.1s} .d2{transition-delay:0.2s} .d3{transition-delay:0.3s}
+.d4{transition-delay:0.4s} .d5{transition-delay:0.5s} .d6{transition-delay:0.6s}
 
 /* ═══════════════════════════════════
    RESPONSIVE TWEAKS
 ═══════════════════════════════════ */
-@media(max-width: 480px) {
+@media(max-width:480px) {
   nav { padding: 16px 18px; }
   .hero-content { padding: 40px 18px 70px; }
   .cta-group { flex-direction: column; align-items: center; }
   .btn-hero { width: 100%; justify-content: center; max-width: 320px; }
   .stats-row { gap: 10px; }
   .stat-pill { padding: 12px 16px; min-width: 85px; }
-  .pillars { grid-template-columns: repeat(3,1fr); }
   .pillar { padding: 24px 8px; }
   .pillar-icon { font-size: 1.3rem; }
   .section { padding: 60px 18px; }
-  footer { flex-direction: column; align-items: center; text-align: center; }
-  .footer-links { justify-content: center; }
+  footer { flex-direction: column; align-items: center; text-align: center; padding: 24px 18px; }
   .footer-small { text-align: center; }
+  .agency-bar p { font-size: 0.6rem; }
+  .cta-section { padding: 60px 18px; }
 }
-
-@media(max-width: 360px) {
+@media(max-width:360px) {
   .hero-h1 { font-size: 2.4rem; }
   .stat-pill { min-width: 72px; padding: 10px 10px; }
 }
@@ -864,19 +752,20 @@ footer {
 </head>
 <body>
 
-<!-- ═══════════════ HERO SECTION ═══════════════ -->
+<!-- ═══════ HERO ═══════ -->
 <section class="hero-bg" id="home">
-
-  <!-- NAV -->
   <nav>
     <div class="logo">7HORSE<span>.pro</span></div>
     <div class="nav-right">
-      <a href="https://d.7horse.pro/" target="_blank" rel="noopener"><button class="btn-base btn-ghost">Login</button></a>
-      <a href="https://d.7horse.pro/" target="_blank" rel="noopener"><button class="btn-base btn-solid">Join Now</button></a>
+      <a href="https://d.7horse.pro/" target="_blank" rel="noopener">
+        <button class="btn-base btn-ghost">Login</button>
+      </a>
+      <a href="https://d.7horse.pro/" target="_blank" rel="noopener">
+        <button class="btn-base btn-solid">Join Now</button>
+      </a>
     </div>
   </nav>
 
-  <!-- HERO CONTENT -->
   <div class="hero-content">
     <div class="live-badge">
       <div class="pulse"></div>
@@ -908,7 +797,6 @@ footer {
       </a>
     </div>
 
-    <!-- Stats -->
     <div class="stats-row">
       <div class="stat-pill">
         <div class="stat-num">₹2 Cr+</div>
@@ -924,16 +812,10 @@ footer {
       </div>
     </div>
   </div>
-
-  <!-- Scroll cue -->
-  <div class="scroll-cue">
-    <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
-    Scroll
-  </div>
-
+  <!-- Scroll mouse HATAYA GAYA -->
 </section>
 
-<!-- ═══════════════ WINNERS TICKER ═══════════════ -->
+<!-- ═══════ WINNERS TICKER ═══════ -->
 <div class="trust-strip sv" id="winners">
   <div class="strip-inner">
     <div class="strip-label">🏆 Big Wins</div>
@@ -943,12 +825,11 @@ footer {
   </div>
 </div>
 
-<!-- ═══════════════ GAMES SECTION ═══════════════ -->
+<!-- ═══════ GAMES ═══════ -->
 <div style="background:rgba(2,2,2,0.96);position:relative;z-index:10;" id="games">
   <div class="section">
     <div class="section-tag sv">Live Markets</div>
     <div class="section-title sv d1">Pick Your <em>Arena</em></div>
-
     <div class="games-grid">
       <div class="game-card sv d1">
         <div class="live-pill"><div class="r-dot"></div>LIVE</div>
@@ -989,7 +870,7 @@ footer {
   </div>
 </div>
 
-<!-- ═══════════════ TRUST PILLARS ═══════════════ -->
+<!-- ═══════ TRUST PILLARS ═══════ -->
 <div class="pillars-wrap" id="trust">
   <div class="pillars">
     <div class="pillar sv d1">
@@ -1010,47 +891,51 @@ footer {
   </div>
 </div>
 
-<!-- ═══════════════ FINAL CTA ═══════════════ -->
+<!-- ═══════ FINAL CTA ═══════ -->
 <div class="cta-section sv" id="download">
   <h2 class="cta-title">Start Winning <span>Today</span></h2>
-  <p class="cta-sub">Download the app, get your ID on WhatsApp, and place your first bet in under 2 minutes.</p>
+  <p class="cta-sub">Sign up in 2 minutes and start betting on your favourite sports and games right now.</p>
   <div class="cta-btns">
-    <a href="https://d.7horse.pro/" target="_blank" rel="noopener"><button class="btn-hero btn-play">⬇ Download APK</button></a>
-    <a href="https://d.7horse.pro/" target="_blank" rel="noopener"><button class="btn-hero btn-wa">🎯 Sign Up Now</button></a>
+    <a href="https://d.7horse.pro/" target="_blank" rel="noopener">
+      <button class="btn-hero btn-play">⬇ Download APK</button>
+    </a>
+    <a href="https://d.7horse.pro/" target="_blank" rel="noopener">
+      <button class="btn-hero btn-wa">🎯 Sign Up Now</button>
+    </a>
   </div>
   <p class="cta-note">18+ &nbsp;·&nbsp; Play Responsibly &nbsp;·&nbsp; T&C Apply</p>
 </div>
 
-<!-- ═══════════════ FOOTER ═══════════════ -->
+<!-- ═══════ FOOTER ═══════ -->
 <footer>
   <div class="footer-logo">7HORSE.pro</div>
-  <p class="footer-small">© 2024 7Horse.pro. For entertainment only. 18+ only. Gambling can be addictive — please play responsibly.</p>
+  <p class="footer-small">© 2024 7Horse.pro. For entertainment only. 18+ only. Please play responsibly.</p>
   <div class="footer-links">
-    <a class="footer-link" href="#">Privacy</a>
-    <a class="footer-link" href="#">Terms</a>
-    <a class="footer-link" href="#">Contact</a>
+    <a class="footer-link" href="https://d.7horse.pro/" target="_blank">Privacy</a>
+    <a class="footer-link" href="https://d.7horse.pro/" target="_blank">Terms</a>
+    <a class="footer-link" href="https://d.7horse.pro/" target="_blank">Contact</a>
   </div>
 </footer>
-<!-- AGENCY CREDIT -->
-<div style="background:#000;text-align:center;padding:10px 16px;border-top:1px solid rgba(212,175,55,0.1);">
-  <span style="font-family:'Outfit',sans-serif;font-size:0.62rem;color:rgba(255,255,255,0.22);letter-spacing:1px;">
+
+<!-- ═══════ AGENCY CREDIT ═══════ -->
+<div class="agency-bar">
+  <p>
     Ads Managed by &nbsp;
-    <a href="https://telegram.me/+TRlJl628l-FkMWE9" target="_blank" rel="noopener"
-       style="color:#D4AF37;text-decoration:none;font-weight:600;letter-spacing:1.5px;transition:opacity 0.2s;"
-       onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+    <a href="https://telegram.me/+TRlJl628l-FkMWE9" target="_blank" rel="noopener">
       NexGroww Agency ↗
     </a>
-  </span>
+  </p>
 </div>
 
-<!-- ═══════════════ FLOATING TELEGRAM ═══════════════ -->
-<a href="https://telegram.me/+TRlJl628l-FkMWE9" target="_blank" rel="noopener" title="Join us on Telegram" class="fab-wa" style="background:linear-gradient(135deg,#2AABEE,#1A7FC4);">
+<!-- ═══════ TELEGRAM FAB ═══════ -->
+<a href="https://telegram.me/+TRlJl628l-FkMWE9" target="_blank" rel="noopener"
+   class="fab-tg" title="Join us on Telegram">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
     <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.04 9.61c-.148.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L6.18 14.748l-2.95-.924c-.64-.203-.654-.64.138-.948l11.543-4.453c.534-.194 1.001.13.651.825z"/>
   </svg>
 </a>
 
-<!-- ═══════════════ MOBILE BOTTOM NAV ═══════════════ -->
+<!-- ═══════ MOBILE BOTTOM NAV ═══════ -->
 <nav class="mob-nav" id="mobNav">
   <div class="mn-item active" data-target="home">
     <svg class="mn-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
@@ -1076,7 +961,7 @@ footer {
 </nav>
 
 <script>
-/* ── BIG WINS TICKER ──────────────────────── */
+/* ── WINNERS TICKER ─────────────── */
 const wins = [
   { id:'782***', amt:'₹1,45,000', game:'Aviator',    icon:'✈️' },
   { id:'451***', amt:'₹82,500',  game:'IPL Cricket', icon:'🏏' },
@@ -1087,46 +972,44 @@ const wins = [
   { id:'845***', amt:'₹4,50,000',game:'Aviator',     icon:'✈️' },
   { id:'112***', amt:'₹28,750',  game:'T20 Cricket', icon:'🏏' },
 ];
-(function buildStrip() {
-  const track = document.getElementById('stripTrack');
-  [...wins, ...wins].forEach(w => {
+(function(){
+  const t = document.getElementById('stripTrack');
+  [...wins,...wins].forEach(w => {
     const el = document.createElement('div');
     el.className = 'strip-item';
-    el.innerHTML = `${w.icon} &nbsp;User ${w.id} won <span class="strip-amount">&nbsp;${w.amt}&nbsp;</span> on <span class="strip-game">&nbsp;${w.game}</span>`;
-    track.appendChild(el);
+    el.innerHTML = `${w.icon}&nbsp;&nbsp;User ${w.id} won<span class="strip-amount">&nbsp;${w.amt}&nbsp;</span>on<span class="strip-game">&nbsp;${w.game}</span>`;
+    t.appendChild(el);
   });
 })();
 
-/* ── SCROLL REVEAL ─────────────────────────── */
+/* ── SCROLL REVEAL ──────────────── */
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
 }, { threshold: 0.08 });
 document.querySelectorAll('.sv').forEach(el => obs.observe(el));
 
-/* ── MOBILE NAV ────────────────────────────── */
+/* ── MOBILE NAV ─────────────────── */
 document.querySelectorAll('.mn-item').forEach(item => {
   item.addEventListener('click', () => {
     document.querySelectorAll('.mn-item').forEach(i => i.classList.remove('active'));
     item.classList.add('active');
-    const target = document.getElementById(item.dataset.target);
-    if(target) target.scrollIntoView({ behavior: 'smooth' });
+    const t = document.getElementById(item.dataset.target);
+    if(t) t.scrollIntoView({ behavior:'smooth' });
   });
 });
 
-/* ── NAV TRANSPARENCY ─────────────────────── */
+/* ── NAV TRANSPARENCY ───────────── */
 window.addEventListener('scroll', () => {
-  const nav = document.querySelector('nav');
-  nav.style.background = window.scrollY > 60
-    ? 'rgba(2,2,2,0.96)'
-    : 'rgba(2,2,2,0.50)';
-}, { passive: true });
+  document.querySelector('nav').style.background =
+    window.scrollY > 60 ? 'rgba(2,2,2,0.96)' : 'rgba(2,2,2,0.50)';
+}, { passive:true });
 
-/* ── GAME CARD 3D TILT ─────────────────────── */
+/* ── GAME CARD 3D TILT ──────────── */
 document.querySelectorAll('.game-card').forEach(card => {
   card.addEventListener('mousemove', e => {
     const r = card.getBoundingClientRect();
-    const dx = ((e.clientX - r.left) / r.width  - 0.5) * 12;
-    const dy = ((e.clientY - r.top)  / r.height - 0.5) * 12;
+    const dx = ((e.clientX-r.left)/r.width  - 0.5)*12;
+    const dy = ((e.clientY-r.top) /r.height - 0.5)*12;
     card.style.transform = `translateY(-10px) scale(1.03) rotateY(${dx}deg) rotateX(${-dy}deg)`;
     card.style.transition = 'none';
   });
